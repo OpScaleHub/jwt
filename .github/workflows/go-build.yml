@@ -18,7 +18,7 @@ jobs:
           EXTRA_FILES: "LICENSE"
       - name: zip artifact
         run: |
-          zip --junk-paths jwt    
+          tar -cvzf jwt.tgz jwt    
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -36,6 +36,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./jwt.zip
-          asset_name: jwt.zip
+          asset_path: ./jwt.tgz
+          asset_name: jwt.tgz
           asset_content_type: application/zip
