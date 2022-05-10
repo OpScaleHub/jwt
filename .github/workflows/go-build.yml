@@ -18,7 +18,6 @@ jobs:
           EXTRA_FILES: "LICENSE"
       - name: zip artifact
         run: |
-          ls -l
           tar -cvzf jwt.tgz jwt    
       - name: Create Release
         id: create_release
