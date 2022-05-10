@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run go Build
-        run: go mod download ; go build .
+        run: go mod download ; go build . ; ls -l ; pwd
         env:
           GOARCH: amd64
           GOOS: linux
