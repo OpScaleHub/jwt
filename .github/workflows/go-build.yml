@@ -4,9 +4,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
-    defaults:
-      run:
-        working-directory: ${PWD}/src
+    # defaults:
+    #   run:
+    #     working-directory: ${PWD}/src
     steps:
       - uses: actions/checkout@v2
       - name: Run go Build
