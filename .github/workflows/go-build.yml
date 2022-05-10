@@ -8,22 +8,17 @@ jobs:
     #   run:
     #     working-directory: src/
     steps:
-      - uses: actions/checkout@v2
-      - name: Run go Build
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: go Build
         run: go mod download ; go build . 
         env:
           GOARCH: amd64
           GOOS: linux
           EXTRA_FILES: "LICENSE"
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build project # This would actually build your project, using zip for an example artifact
+      - name: zip artifact
         run: |
           zip --junk-paths jwt    
-      - uses: actions/upload-artifact@v3
-        with:
-          name: jwt
-          path: jwt
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -40,7 +35,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./jwt.zip
           asset_name: jwt.zip
           asset_content_type: application/zip
