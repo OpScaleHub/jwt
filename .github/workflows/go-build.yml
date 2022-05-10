@@ -14,7 +14,7 @@ jobs:
         env:
           GOARCH: amd64
           GOOS: linux
-        EXTRA_FILES: "LICENSE"
+          EXTRA_FILES: "LICENSE"
       - uses: actions/upload-artifact@v3
         with:
           name: main
