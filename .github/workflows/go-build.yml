@@ -12,6 +12,10 @@ jobs:
       - name: Run go Build
         run: go mod download ; go build .
         env:
-        GOARCH: amd64
-        GOOS: linux
+          GOARCH: amd64
+          GOOS: linux
         EXTRA_FILES: "LICENSE"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: main
+          path: main
