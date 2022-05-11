@@ -10,20 +10,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: go Build
         run: go mod download ; go build . 
         env:
           GOARCH: amd64
           GOOS: linux
           EXTRA_FILES: "LICENSE"
+
       - name: zip artifact
         run: |
           tar -cvzf jwt.tar.gz jwt    
+
       - name: Create Release
         id: create_release
         uses: go-semantic-release/action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
@@ -34,3 +38,23 @@ jobs:
           asset_path: ./jwt.tar.gz
           asset_name: jwt.tar.gz
           asset_content_type: application/zip
+
+
+
+
+
+      # - name: Get release
+      #   id: get_release
+      #   uses: bruceadams/get-release@v1.2.3
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}          
+
+      # - name: Upload release binary
+      #   uses: actions/upload-release-asset@v1.0.2
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #   with:
+      #     upload_url: ${{ steps.get_release.outputs.upload_url }}
+      #     asset_path: ./target/release/my-widget
+      #     asset_name: my-widget
+      #     asset_content_type: application/octet-stream
