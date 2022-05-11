@@ -29,7 +29,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          update-file: jwt.tar.gz
+          force-bump-patch-version: "true"
           changelog-generator-opt: "emojis=true"
 
       # - uses: go-semantic-release/action@v1
