@@ -27,19 +27,22 @@ jobs:
         uses: go-semantic-release/action@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        outputs:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-
-      - name: Upload Release Asset
-        id: upload_release_asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./jwt.tar.gz
-          asset_name: jwt.tar.gz
-          asset_content_type: application/tar+gzip
+          #github-token: ${{ secrets.GITHUB_TOKEN }}
+          update-file: package.json
+          changelog-generator-opt: "emojis=true"
+
+
+      # - name: Upload Release Asset
+      #   id: upload_release_asset 
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./jwt.tar.gz
+      #     asset_name: jwt.tar.gz
+      #     asset_content_type: application/tar+gzip
 
       # - name: Get release
       #   id: get_release
