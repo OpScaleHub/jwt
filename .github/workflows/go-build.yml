@@ -27,21 +27,20 @@ jobs:
         uses: go-semantic-release/action@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
+        outputs:
+          version: ${{ steps.step_version.outputs.version }}
+          upload_url: ${{ steps.upload_release_asset.outputs.upload_url }}
 
       - name: Upload Release Asset
-        id: upload-release-asset 
+        id: upload_release_asset 
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          upload_url: ${{ github.event.create_release.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./jwt.tar.gz
           asset_name: jwt.tar.gz
           asset_content_type: application/tar+gzip
-
-
-
-
 
       # - name: Get release
       #   id: get_release
