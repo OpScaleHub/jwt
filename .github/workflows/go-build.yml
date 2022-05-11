@@ -29,6 +29,7 @@ jobs:
           changelog-generator-opt: "emojis=true"
 
       - name: zip artifact
+        uses: alpine
         run: echo "${outputs}"
         with:
           outputs: ${{ steps.create_release.outputs }}
