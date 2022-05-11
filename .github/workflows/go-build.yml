@@ -27,9 +27,8 @@ jobs:
         uses: go-semantic-release/action@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        # outputs:
-        #   version: ${{ steps.step_version.outputs.version }}
-        #   upload_url: ${{ steps.upload_release_asset.outputs.upload_url }}
+        outputs:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
 
       - name: Upload Release Asset
         id: upload_release_asset 
