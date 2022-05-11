@@ -60,10 +60,9 @@ func main() {
 		if _, ok := claims["nonce"]; ok {
 			fmt.Printf("nonce: [ %s ]\n", claims["nonce"])
 		}
-		// Verify Sig
+		// Verify SigSignature
 		fmt.Println("      [#] VERIFY SIGNATURE")
-
-		fmt.Printf("Signature Verified\n")
+		//fmt.Printf("Signature Verified\n")
 		fmt.Printf("#ToDo\n")
 
 		// for k, v := range claims {
