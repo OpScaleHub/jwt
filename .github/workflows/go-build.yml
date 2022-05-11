@@ -10,15 +10,18 @@ jobs:
         uses: actions/checkout@v2
 
       - name: go Build
-        run: go mod download ; go build . 
+        run: go mod download ; go build .
         env:
           GOARCH: amd64
           GOOS: linux
           EXTRA_FILES: "LICENSE"
 
       - name: zip artifact
-        run: |
-          tar -cvzf jwt.tar.gz jwt    
+        run: tar -cvzf jwt.tar.gz jwt
+
+
+      - name: zip artifact
+        run: ls -l
 
       - name: Create Release
         id: create_release
