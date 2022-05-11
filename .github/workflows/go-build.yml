@@ -4,9 +4,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
-    # defaults:
-    #   run:
-    #     working-directory: src/
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -28,34 +26,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          #github-token: ${{ secrets.GITHUB_TOKEN }}
           update-file: jwt.tar.gz
           changelog-generator-opt: "emojis=true"
 
-
-      # - name: Upload Release Asset
-      #   id: upload_release_asset 
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ github.token }}
+      # - uses: go-semantic-release/action@v1
+      #   id: semrel
       #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ./jwt.tar.gz
-      #     asset_name: jwt.tar.gz
-      #     asset_content_type: application/tar+gzip
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     update-file: package.json
+      #     changelog-generator-opt: "emojis=true"
 
-      # - name: Get release
-      #   id: get_release
-      #   uses: bruceadams/get-release@v1.2.3
-      #   env:
-      #     GITHUB_TOKEN: ${{ github.token }}          
-
-      # - name: Upload release binary
-      #   uses: actions/upload-release-asset@v1.0.2
-      #   env:
-      #     GITHUB_TOKEN: ${{ github.token }}
-      #   with:
-      #     upload_url: ${{ steps.get_release.outputs.upload_url }}
-      #     asset_path: ./target/release/my-widget
-      #     asset_name: my-widget
-      #     asset_content_type: application/octet-stream
