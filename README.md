@@ -5,8 +5,15 @@ Portable JWT token validation
 - support for TOKEN read from stdin
 
 
+## How To Install
 ```bash
- $ go run . ${TOKEN}
+curl https://raw.githubusercontent.com/OpScaleHub/jwt/main/get-jwt.sh | sudo bash -c
+```
+
+## Usage
+
+```bash
+ $ jwt ${TOKEN}
       [#] HEADER:ALGORITHM & TOKEN TYPE
 alg:   [ RS256 ]
 kid:   [ 9f0106c270df0da4d406c6520b76c9157887b493 ]
@@ -20,7 +27,7 @@ nonce: [ dHz0utfydrof6XYXJtXJi8X6xSx5Rzpw1eSlDkjEIW0 ]
       [#] VERIFY SIGNATURE
 #ToDo
 (⎈ |opscale:argocd) ~/Projects/jwt (main *)
- $ echo ${TOKEN} | go run . 
+ $ echo ${TOKEN} | jwt 
       [#] HEADER:ALGORITHM & TOKEN TYPE
 alg:   [ RS256 ]
 kid:   [ 9f0106c270df0da4d406c6520b76c9157887b493 ]
