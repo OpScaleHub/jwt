@@ -28,12 +28,18 @@ jobs:
           force-bump-patch-version: "true"
           changelog-generator-opt: "emojis=true"
 
+      - name: Gets latest created release info
+        id: latest_release_info
+        uses: jossef/action-latest-release-info@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.latest_release_info.outputs.upload_url }}
           # This pulls from the CREATE RELEASE step above,
           # referencing it's ID to get its outputs object,
           # which include a `upload_url`.
