@@ -27,8 +27,7 @@ jobs:
           fi
           go mod download
           go build -o ${OUTPUT_NAME} .
-          ls -l
-          tar -cvzf builds/${OUTPUT_NAME}.tgz ${OUTPUT_NAME}
+          tar -cvzf ${OUTPUT_NAME}.tgz ${OUTPUT_NAME}
         env:
           GOARCH: ${{ matrix.goarch }}
           GOOS:   ${{ matrix.goos }}
@@ -62,5 +61,5 @@ jobs:
           # referencing it's ID to get its outputs object,
           # which include a `upload_url`.
           # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./builds/*.tgz
+          asset_path: ./*.tgz
           asset_content_type: application/zip
