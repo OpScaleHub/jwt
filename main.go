@@ -1,16 +1,38 @@
 package main
 
 import (
+	"bufio"
 	"encoding/base64"
+	"flag"
 	"fmt"
+	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
 func main() {
-	tokenString := os.Args[1]
+
+	flag.Parse()
+	var tokenString string
+
+	if flag.NArg() == 0 { // from stdin/pipe
+		reader := bufio.NewReader(os.Stdin)
+		var err error
+		tokenString, err = reader.ReadString('\n')
+		if err != nil {
+			log.Fatalln("failed to read input")
+		}
+		tokenString = strings.TrimSpace(tokenString) // otherwise, we would have a blank line
+	} else { // from argument
+		if flag.NArg() > 1 {
+			log.Fatalln("takes at most one input")
+		}
+		tokenString = os.Args[1]
+	}
+
 	token, _, err := new(jwt.Parser).ParseUnverified(tokenString, jwt.MapClaims{})
 	if err != nil {
 		fmt.Printf("Error %s", err)
