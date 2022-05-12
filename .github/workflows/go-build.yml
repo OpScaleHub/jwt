@@ -4,20 +4,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
+    strategy:
+      matrix:
+      # build and publish in parallel: linux/386, linux/amd64, linux/arm64, windows/386, windows/amd64, darwin/amd64, darwin/arm64
+      goos: [linux, windows, darwin]
+      goarch: ["386", amd64, arm64]
+      exclude:
+        - goarch: "386"
+          goos: darwin
+        - goarch: arm64
+          goos: windows
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: go Build
-        run: go mod download ; go build .
+        run: |
+          set -x
+          OUTPUT_NAME=jwt'-'$GOOS'-'$GOARCH
+          if [ $GOOS = "windows" ]; then
+            OUTPUT_NAME+='.exe'
+          fi 
+          go mod download
+          go build -o ${OUTPUT_NAME} .
+          tar -cvzf builds/${OUTPUT_NAME}.tgz ${OUTPUT_NAME}
         env:
-          GOARCH: amd64
-          GOOS: linux
+          GOARCH: ${{ matrix.goarch }}
+          GOOS:   ${{ matrix.goos }}
           EXTRA_FILES: "LICENSE"
-
-      - name: zip artifact
-        run: tar -cvzf jwt.tgz jwt
 
       - name: Create Release
         id: create_release
@@ -47,6 +62,5 @@ jobs:
           # referencing it's ID to get its outputs object,
           # which include a `upload_url`.
           # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./jwt.tgz
-          asset_name: jwt.tgz
+          asset_path: ./builds/*.tgz
           asset_content_type: application/zip
