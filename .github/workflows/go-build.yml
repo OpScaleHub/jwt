@@ -2,16 +2,6 @@ name: golang-pipeline
 on: push
 jobs:
   build:
-    strategy:
-      matrix:
-        # build and publish in parallel: linux/386, linux/amd64, linux/arm64, windows/386, windows/amd64, darwin/amd64, darwin/arm64
-        goos: ["linux", "windows", "darwin"]
-        goarch: ["386", "amd64", "arm64"]
-        exclude:
-          - goarch: "386"
-            goos: "darwin"
-          - goarch: "arm64"
-            goos: "windows"
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
     steps:
@@ -20,17 +10,10 @@ jobs:
 
       - name: go Build
         run: |
-          set -x
-          OUTPUT_NAME=jwt'-'$GOOS'-'$GOARCH
-          if [ $GOOS = "windows" ]; then
-            OUTPUT_NAME+='.exe'
-          fi
           go mod download
-          go build -o ${OUTPUT_NAME} .
-          tar -cvzf ${OUTPUT_NAME}.tgz ${OUTPUT_NAME}
+          go build -o jwt .
+          tar -cvzf jwt.tgz jwt
         env:
-          GOARCH: ${{ matrix.goarch }}
-          GOOS:   ${{ matrix.goos }}
           EXTRA_FILES: "LICENSE"
 
       - name: Create Release
@@ -43,7 +26,7 @@ jobs:
           changelog-generator-opt: "emojis=true"
 
       - name: zip artifact
-        run: sleep 10
+        run: sleep 5
 
       - name: Gets latest created release info
         id: latest_release_info
@@ -61,5 +44,6 @@ jobs:
           # referencing it's ID to get its outputs object,
           # which include a `upload_url`.
           # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./*.tgz
+          asset_path: jwt.tgz
+          asset_name: jwt.tgz
           asset_content_type: application/zip
