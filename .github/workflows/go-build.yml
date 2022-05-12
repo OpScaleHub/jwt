@@ -29,7 +29,7 @@ jobs:
           changelog-generator-opt: "emojis=true"
 
       - name: zip artifact
-        run: ls -l
+        run: sleep 10
 
       - name: Gets latest created release info
         id: latest_release_info
