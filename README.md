@@ -7,7 +7,7 @@ Portable JWT token validation
 
 ## How To Install
 ```bash
-curl https://raw.githubusercontent.com/OpScaleHub/jwt/main/get-jwt.sh | sudo bash -c
+curl --silent https://raw.githubusercontent.com/OpScaleHub/jwt/main/get-jwt.sh | sudo bash -c
 ```
 
 ## Usage
