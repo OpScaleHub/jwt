@@ -24,9 +24,10 @@ jobs:
           OUTPUT_NAME=jwt'-'$GOOS'-'$GOARCH
           if [ $GOOS = "windows" ]; then
             OUTPUT_NAME+='.exe'
-          fi 
+          fi
           go mod download
           go build -o ${OUTPUT_NAME} .
+          ls -l
           tar -cvzf builds/${OUTPUT_NAME}.tgz ${OUTPUT_NAME}
         env:
           GOARCH: ${{ matrix.goarch }}
