@@ -39,10 +39,9 @@ func main() {
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
-
+		fmt.Println("---------------------------------")
 		// Print Headers
-		fmt.Println("      [#] HEADER:ALGORITHM & TOKEN TYPE")
-
+		fmt.Println("[#] HEADER:ALGORITHM & TOKEN TYPE")
 		if _, ok := token.Header["alg"]; ok {
 			fmt.Printf("alg:   [ %s ]\n", token.Header["alg"])
 		}
@@ -54,9 +53,9 @@ func main() {
 		if _, ok := token.Header["typ"]; ok {
 			fmt.Printf("typ:   [ %s ]\n", token.Header["typ"])
 		}
-
+		fmt.Println("\n---------------------------------")
 		// Print Token DATA
-		fmt.Println("      [#] PAYLOAD:DATA")
+		fmt.Println("[#] PAYLOAD:DATA")
 		if _, ok := claims["iss"]; ok {
 			fmt.Printf("iss:   [ %s ]\n", claims["iss"])
 		}
@@ -82,20 +81,15 @@ func main() {
 		if _, ok := claims["nonce"]; ok {
 			fmt.Printf("nonce: [ %s ]\n", claims["nonce"])
 		}
+		fmt.Println("\n----------------")
 		// Verify SigSignature
-		fmt.Println("      [#] VERIFY SIGNATURE")
-		//fmt.Printf("Signature Verified\n")
-		fmt.Printf("#ToDo\n")
+		fmt.Println("[#] VERIFY SIGNATURE")
+		if ok := token.Valid; ok {
+			fmt.Printf("Signature Verified.\n")
+		} else {
+			fmt.Printf("Invalid Signature.\n")
+		}
+		fmt.Println("--------------------")
 
-		// for k, v := range claims {
-		// 	if k == "exp" || k == "iat" {
-		// 		epochTime := int64(v.(float64))
-		// 		fmt.Println(time.Unix(epochTime, 0))
-		// 		fmt.Printf("%s: [%d]\n", k, epochTime)
-		// 	} else {
-		// 		fmt.Printf("%s: [%s]\n", k, v)
-		// 	}
-
-		// }
 	}
 }
