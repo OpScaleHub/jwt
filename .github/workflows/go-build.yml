@@ -10,7 +10,7 @@ jobs:
 
       - name: go Build
         run: |
-          go mod download
+          go mod tidy
           go build -o jwt .
           tar -cvzf jwt.tgz jwt
         env:
