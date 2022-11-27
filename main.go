@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"encoding/base64"
 	"flag"
 	"fmt"
 	"log"
@@ -11,6 +10,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"golang.org/x/exp/slices"
 )
 
 func main() {
@@ -39,57 +39,32 @@ func main() {
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
-		fmt.Println("---------------------------------")
-		// Print Headers
+
 		fmt.Println("[#] HEADER:ALGORITHM & TOKEN TYPE")
-		if _, ok := token.Header["alg"]; ok {
-			fmt.Printf("alg:   [ %s ]\n", token.Header["alg"])
+		//fmt.Println(token.Header)
+		for k, v := range token.Header {
+			fmt.Printf("%s: [%s]\n", k, v)
 		}
-
-		if _, ok := token.Header["kid"]; ok {
-			fmt.Printf("kid:   [ %s ]\n", token.Header["kid"])
-		}
-
-		if _, ok := token.Header["typ"]; ok {
-			fmt.Printf("typ:   [ %s ]\n", token.Header["typ"])
-		}
-		fmt.Println("\n---------------------------------")
-		// Print Token DATA
+		fmt.Println("\n----------------")
 		fmt.Println("[#] PAYLOAD:DATA")
-		if _, ok := claims["iss"]; ok {
-			fmt.Printf("iss:   [ %s ]\n", claims["iss"])
-		}
-		decodedSub, err := base64.StdEncoding.DecodeString(claims["sub"].(string))
-		if err != nil {
-			fmt.Printf("sub:   [ %s ]\n", claims["sub"])
-		} else {
+		//fmt.Println(token.Claims)
+		for k, v := range claims {
+			timestamps := []string{"exp", "iat", "nbf", "naf"}
+			if slices.Contains(timestamps, k) {
+				fmt.Printf("%s: [ %s ]\n", k, time.Unix(int64(v.(float64)), 0))
+			} else {
+				fmt.Printf("%s: [ %s ]\n", k, v)
+			}
 
-			fmt.Printf("sub:   [ %s ]\n", decodedSub[1:])
-		}
-
-		if _, ok := claims["aud"]; ok {
-			fmt.Printf("aud:   [ %s ]\n", claims["aud"])
-		}
-
-		if _, ok := claims["exp"]; ok {
-			fmt.Printf("exp:   [ %s ]\n", time.Unix(int64(claims["exp"].(float64)), 0))
-		}
-		if _, ok := claims["iat"]; ok {
-			fmt.Printf("iat:   [ %s ]\n", time.Unix(int64(claims["iat"].(float64)), 0))
-		}
-
-		if _, ok := claims["nonce"]; ok {
-			fmt.Printf("nonce: [ %s ]\n", claims["nonce"])
 		}
 		fmt.Println("\n----------------")
 		// Verify SigSignature
 		fmt.Println("[#] VERIFY SIGNATURE")
 		if ok := token.Valid; ok {
 			fmt.Printf("Signature Verified.\n")
+			fmt.Println(token.Signature)
 		} else {
 			fmt.Printf("Invalid Signature.\n")
 		}
-		fmt.Println("--------------------")
-
 	}
 }
