@@ -17,7 +17,6 @@ jobs:
         run: |
           go mod tidy
           go build -o jwt .
-          tar -cvzf jwt.tgz jwt
         env:
           EXTRA_FILES: "LICENSE"
 
@@ -30,8 +29,6 @@ jobs:
           force-bump-patch-version: "true"
           changelog-generator-opt: "emojis=true"
 
-      - name: zip artifact
-        run: sleep 5
 
       - name: Gets latest created release info
         id: latest_release_info
@@ -49,6 +46,6 @@ jobs:
           # referencing it's ID to get its outputs object,
           # which include a `upload_url`.
           # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: jwt.tgz
-          asset_name: jwt.tgz
-          asset_content_type: application/zip
+          asset_path: jwt.
+          asset_name: jwt
+          asset_content_type: application/octet-stream
