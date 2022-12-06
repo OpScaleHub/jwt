@@ -16,7 +16,8 @@ jobs:
       - name: go Build
         run: |
           go mod tidy
-          go build -o jwt .
+          env GOOS=linux   GOARCH=amd64 go build -o jwt     .
+          env GOOS=windows GOARCH=amd64 go build -o jwt.exe . 
         env:
           EXTRA_FILES: "LICENSE"
 
@@ -46,6 +47,20 @@ jobs:
           # referencing it's ID to get its outputs object,
           # which include a `upload_url`.
           # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: jwt.
+          asset_path: jwt
           asset_name: jwt
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.latest_release_info.outputs.upload_url }}
+          # This pulls from the CREATE RELEASE step above,
+          # referencing it's ID to get its outputs object,
+          # which include a `upload_url`.
+          # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: jwt.exe
+          asset_name: jwt.exe
           asset_content_type: application/octet-stream
